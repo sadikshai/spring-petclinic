@@ -18,7 +18,13 @@ jobs:
         with:
           username: sadik8143
           password: Sadik@8143
-          
+
       - name: build dockerimage
         run: |
           docker build -t sadik8143/springpetclinic:1.0 .
+      - name: pushing the docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: sadik8143/springpetclinic:1.0
