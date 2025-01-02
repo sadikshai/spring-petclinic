@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - develop
-  pull:
+  pull_request:
     branches:
       - main
 jobs:
@@ -18,4 +18,3 @@ jobs:
         with:
           username: sadik8143
           password: Sadik@8143
-  
