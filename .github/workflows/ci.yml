@@ -39,6 +39,14 @@ jobs:
           push: true
           tags: sadik8143/springpetclinic:1.0
       
-      - name: scainning the image with trivy
+      - name: installing trivy
+        run: |
+          sudo apt-get install wget apt-transport-https gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+          echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install trivy -y
+
+      - name: scan the image
         run: |
           trivy image sadik8143/springpetclinic:1.0
