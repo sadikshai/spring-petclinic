@@ -1,0 +1,19 @@
+name: Continous integration
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  build_docker_image:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: setup jdk
+      - uses: actions/setup-java@v4
+        with:
+          distribution: corretto
+          java-version: '17'
+      - name : build with maven 
+        run: mvn package
