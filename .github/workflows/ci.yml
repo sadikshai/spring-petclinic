@@ -38,3 +38,7 @@ jobs:
           context: .
           push: true
           tags: sadik8143/springpetclinic:1.0
+      
+      - name: scainning the image with trivy
+        run: |
+          trivy image sadik8143/springpetclinic:1.0
