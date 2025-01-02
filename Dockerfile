@@ -1,20 +1,16 @@
-FROM maven:3.9.7-eclipse-temurin-17 AS build
-RUN git clone https://github.com/spring-projects/spring-petclinic.git
-RUN cd spring-petclinic && mvn clean package
+# Building stage
+FROM eclipse-temurin:17-jdk-alpine AS builder
+COPY . /spc
+WORKDIR /spc
+RUN chmod +x mvnw && ./mvnw clean package 
+
+# Creating the final image
+FROM gcr.io/distroless/java17-debian12 AS runner
+WORKDIR /spc
+COPY --from=builder /spc/target/*.jar /spc/data/spring.jar
 
 
-FROM amazoncorretto:17-alpine-jdk
-LABEL author="LaxmiKanthGopiKrishna"
-LABEL purpose="project"
-ARG USER="devuser"
-ARG GROUP="dev"
-ARG WORKDIR="/spc"
-ARG SOURCE="/spring-petclinic/target/spring-petclinic-3.4.0-SNAPSHOT.jar"
-ARG DEST="/spc/spring-petclinic.jar"
-# Create a new user and group
-RUN addgroup -S ${GROUP} && adduser -S ${USER} -G ${GROUP}
-USER ${USER}
-WORKDIR ${WORKDIR}
-COPY --from=build --chown=${USER}:${GROUP} ${SOURCE} ${DEST}
 EXPOSE 8080
-CMD ["java", "-jar", "spring-petclinic.jar"]
+
+# Run the Spring Boot application
+CMD ["java", "-jar", "/spc/data/spring.jar"]
