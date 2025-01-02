@@ -22,6 +22,16 @@ jobs:
       - name: build dockerimage
         run: |
           docker build -t sadik8143/springpetclinic:1.0 .
+      - name: running test
+        run: |
+          mvn test
+      - name: Publish Test Results
+        if: success()  
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: target/surefire-reports/*.xml 
+        
       - name: pushing the docker image
         uses: docker/build-push-action@v6
         with:
