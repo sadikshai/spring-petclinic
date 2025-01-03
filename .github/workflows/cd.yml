@@ -20,6 +20,7 @@
           - name: pulling the image
             run: |
               docker pull sadik8143/springpetclinic:1.0
+
           - name: installing trivy
             run: |
                 sudo apt-get install wget apt-transport-https gnupg lsb-release
@@ -27,21 +28,21 @@
                 echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
                 sudo apt-get update
                 sudo apt-get install trivy -y
+
       
           - name: Scan the image and save results
             run: |
                   trivy image --format json --output trivy-results.json sadik8143/springpetclinic:1.0
+
       
           - name: Upload Trivy scan results
             uses: actions/upload-artifact@v3
             with:
                 name: trivy-results
                 path: trivy-results.json 
-          - name: Azure login
-            uses: azure/login@v2
-            with:
-                  client-id: 74cb6831-0dbb-4be1-8206-fd4df301cdc2
-                  tenant-id:  15647947-d1c2-4096-87a2-acbd9b0c51a4
-                  subscription-id: 088435c4-2a9a-470a-ba21-96097929afcb
+
+          - name: login azure
+            run: |
+              az login
             
     
