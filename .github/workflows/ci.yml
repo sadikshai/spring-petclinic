@@ -48,9 +48,9 @@ jobs:
           sudo apt-get install trivy -y
 
       - name: Scan the image and save results
-          run: |
+        run: |
             trivy image --format json --output trivy-results.json sadik8143/springpetclinic:1.0
-            
+
       - name: Upload Trivy scan results
         uses: actions/upload-artifact@v3
         with:
