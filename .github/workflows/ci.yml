@@ -25,15 +25,15 @@ jobs:
       - name: running test
         run: |
           mvn test
-
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
-        with:
-            files: |
-              target/surefire-reports/*.xml 
-             
+          
      
+             
+      - name: Publish Test Results
+        if: success()  
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: target/surefire-reports/*.xml 
         
       - name: pushing the docker image
         uses: docker/build-push-action@v6
@@ -41,7 +41,6 @@ jobs:
           context: .
           push: true
           tags: sadik8143/springpetclinic:1.0
-
       
       - name: installing trivy
         run: |
@@ -51,17 +50,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install trivy -y
 
-
       - name: Scan the image and save results
         run: |
             trivy image --format json --output trivy-results.json sadik8143/springpetclinic:1.0
-
 
       - name: Upload Trivy scan results
         uses: actions/upload-artifact@v3
         with:
           name: trivy-results
           path: trivy-results.json
-
-
           
