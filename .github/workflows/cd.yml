@@ -40,7 +40,7 @@
           - name: Azure login
             uses: azure/login@v2
             with:
-                  
+                  client-id: 74cb6831-0dbb-4be1-8206-fd4df301cdc2
                   tenant-id:  15647947-d1c2-4096-87a2-acbd9b0c51a4
                   subscription-id: 088435c4-2a9a-470a-ba21-96097929afcb
             
