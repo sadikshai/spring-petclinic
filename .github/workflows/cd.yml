@@ -7,6 +7,10 @@
     jobs:
       deployment_cluster:
          runs-on: ubuntu-latest
+         permissions:
+          id-token: write 
+          contents: read 
+
          steps: 
           - name: Checkout code
             uses: actions/checkout@v4
@@ -41,7 +45,7 @@
                 name: trivy-results
                 path: trivy-results.json 
 
-          
+           
           - name: Azure login
             uses: azure/login@v2
             with:
