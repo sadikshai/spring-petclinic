@@ -49,9 +49,10 @@
           - name: Azure login
             uses: azure/login@v2
             with:
-              client-id: 152dbcb4-9d75-4586-8f2f-a350c972de75
-              tenant-id: 99ef06df-664d-4769-9eaa-9f4ba6706a0d
-              subscription-id: 48779e5a-57d5-432c-8ddf-d51b82b18f09
+              clientId: "03167f04-6443-4cd7-8e95-3da187c6858b"
+              displayName: "myServicePrincipal"
+              password: "gAj8Q~lJaQMrKR9SZcCTLUc-jmlSalDatAN54akG"
+              tenant: "99ef06df-664d-4769-9eaa-9f4ba6706a0d"
             
     
 
