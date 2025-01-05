@@ -41,10 +41,7 @@
                 name: trivy-results
                 path: trivy-results.json 
 
-          - name: login azure
-            run: |
-              az login
-
+          
           - name: Azure login
             uses: azure/login@v2
             with:
@@ -54,4 +51,3 @@
             
     
 
-              
