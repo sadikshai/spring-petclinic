@@ -62,10 +62,10 @@
                       "managementEndpointUrl": "https://management.core.windows.net/"}'
           - name: cluster intialization
             run: |
-              $MY_RESOURCE_GROUP_NAME="myAKSResourceGroup"
-              $REGION="eastus"
-              $MY_AKS_CLUSTER_NAME="myAKSCluster"
-              $MY_DNS_LABEL="mydnslabel"
+              MY_RESOURCE_GROUP_NAME="myAKSResourceGroup"
+              REGION="eastus"
+              MY_AKS_CLUSTER_NAME="myAKSCluster"
+              MY_DNS_LABEL="mydnslabel"
           - name: Azure CLI script
             uses: azure/cli@v2
             with:
