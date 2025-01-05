@@ -60,20 +60,31 @@
                       "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
                       "galleryEndpointUrl": "https://gallery.azure.com/",
                       "managementEndpointUrl": "https://management.core.windows.net/"}'
-          - name: cluster intialization
-            run: |
-              MY_RESOURCE_GROUP_NAME="myAKSResourceGroup"
-              REGION="eastus"
-              MY_AKS_CLUSTER_NAME="myAKSCluster"
-              MY_DNS_LABEL="mydnslabel"
+                      
           - name: Azure CLI script
             uses: azure/cli@v2
             with:
-                azcliversion: latest
-                inlineScript: |
-                  az group create --name $MY_RESOURCE_GROUP_NAME --location $REGION
-                  az aks create --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_AKS_CLUSTER_NAME --node-count 1 --node-vm-size "standard_B2ms"--generate-ssh-keys
-                  az aks get-credentials --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_AKS_CLUSTER_NAME
+              azcliversion: latest
+              inlineScript: |
+                          MY_RESOURCE_GROUP_NAME="myAKSResourceGroup"
+                          REGION="eastus"
+                          MY_AKS_CLUSTER_NAME="myAKSCluster"
+                          MY_DNS_LABEL="mydnslabel"
+              
+                          # Create the resource group
+                          az group create --name $MY_RESOURCE_GROUP_NAME --location $REGION
+              
+                          # Create the AKS cluster
+                          az aks create \
+                            --resource-group $MY_RESOURCE_GROUP_NAME \
+                            --name $MY_AKS_CLUSTER_NAME \
+                            --node-count 1 \
+                            --node-vm-size "Standard_B2ms" \
+                            --generate-ssh-keys \
+                            --dns-name-prefix $MY_DNS_LABEL
+              
+                          # Get credentials for the AKS cluster
+                          az aks get-credentials --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_AKS_CLUSTER_NAME
 
 
 
