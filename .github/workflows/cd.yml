@@ -49,13 +49,19 @@
           - name: Azure login
             uses: azure/login@v2
             with:
-              clientId: "03167f04-6443-4cd7-8e95-3da187c6858b"
-              displayName: "myServicePrincipal"
-              password: "gAj8Q~lJaQMrKR9SZcCTLUc-jmlSalDatAN54akG"
-              tenant: "99ef06df-664d-4769-9eaa-9f4ba6706a0d"
+              creds: '{
+                      "clientId": "22008831-1561-42ff-879f-e7a0ca7298ef",
+                      "clientSecret": "xk~8Q~_LmrmyDOphBwMcSEJhSTgaP4cCTc~jrb5q",
+                      "subscriptionId": "48779e5a-57d5-432c-8ddf-d51b82b18f09",
+                      "tenantId": "99ef06df-664d-4769-9eaa-9f4ba6706a0d",
+                      "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+                      "resourceManagerEndpointUrl": "https://management.azure.com/",
+                      "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+                      "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+                      "galleryEndpointUrl": "https://gallery.azure.com/",
+                      "managementEndpointUrl": "https://management.core.windows.net/"}'
             
     
 
 
 
-              
