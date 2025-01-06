@@ -91,31 +91,32 @@
                     --dns-name-prefix $MY_DNS_LABEL
                 fi
           
-                # Get credentials for the AKS cluster
-                az aks get-credentials --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_AKS_CLUSTER_NAME
+          - name: Set AKS context
+            run: |
+              az aks get-credentials --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_AKS_CLUSTER_NAME
           
 
-                - name: Install Helm
-                run: |
-                  curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-                  chmod +x get_helm.sh
-                  bash get_helm.sh
-        
+          - name: Install Helm
+            run: |
+              curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+              chmod +x get_helm.sh
+              bash get_helm.sh
+          
           - name: Create Helm Chart
             run: |
               helm create spc-chart
               cat <<EOF > spc-chart/values.yaml
               replicaCount: 3
-    
+
               image:
                 repository: sadik8143/springpetclinic
                 tag: "1.0"
                 pullPolicy: IfNotPresent
-    
+
               service:
                 type: LoadBalancer
                 port: 8000
-    
+
               resources:
                 requests:
                   memory: "128Mi"
@@ -124,23 +125,23 @@
                   memory: "256Mi"
                   cpu: "512m"
               EOF
-    
+
           - name: Deploy Helm Chart
             run: |
               kubectl get nodes
               helm install spc-release spc-chart
+      
+
+
+
+            
         
 
 
 
-              
+        
           
-
-
-
-         
-            
-    
+  
 
 
 
