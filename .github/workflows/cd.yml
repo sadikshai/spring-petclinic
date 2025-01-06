@@ -95,9 +95,13 @@
               chmod 700 get_helm.sh
                ./get_helm.sh
               helm create spc-chart 
-          - name: deploying application in k8s
+              
+          - name: Set KUBECONFIG
+            run: echo "KUBECONFIG=/etc/rancher/k3s/k3s.yaml" >> $GITHUB_ENV
+      
+          - name: Deploy application in Kubernetes using Helm
             run: |
-              helm install spc-release ./spc-chart --values ./spc-chart/values.yaml
+                helm install spc-release ./spc-chart --values ./spc-chart/values.yaml
 
 
 
