@@ -107,6 +107,30 @@
 
           - name: List contents of spc-chart (for verification)
             run: ls -R spc-chart || echo "spc-chart directory does not exist."
+
+          - name: Create Helm Chart
+            run: |
+              helm create spc-chart
+              cat <<EOF > spc-chart/values.yaml
+              replicaCount: 3
+    
+              image:
+                repository: sadik8143/springpetclinic
+                tag: "1.0"
+                pullPolicy: IfNotPresent
+    
+              service:
+                type: LoadBalancer
+                port: 8000
+    
+              resources:
+                requests:
+                  memory: "128Mi"
+                  cpu: "256m"
+                limits:
+                  memory: "256Mi"
+                  cpu: "512m"
+              EOF
           
           - name: deploying 
             run: |
