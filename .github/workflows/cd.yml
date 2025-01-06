@@ -97,6 +97,9 @@
               chmod 700 get_helm.sh
                ./get_helm.sh
               helm create spc-chart 
+          - name: aeplying application in k8s
+            run: |
+              helm install spc-release spc-chart
 
 
          
