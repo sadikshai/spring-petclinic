@@ -73,10 +73,7 @@
               
                           # Create the resource group
                           az group create --name $MY_RESOURCE_GROUP_NAME --location $REGION
-                          if az aks show -n $MY_AKS_CLUSTER_NAME -g $MY_RESOURCE_GROUP_NAME -o tsv; then
-                            echo "AKS cluster '$MY_AKS_CLUSTER_NAME' already exists."
-                          else
-                            echo "Creating AKS cluster '$MY_AKS_CLUSTER_NAME'..."
+                          
         
               
                           # Create the AKS cluster
@@ -88,22 +85,15 @@
                             --generate-ssh-keys \                         
                           # Get credentials for the AKS cluster
                           az aks get-credentials --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_AKS_CLUSTER_NAME
-                          fi
+                          
           - name: installing helm
             run: |
               curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
               chmod 700 get_helm.sh
                ./get_helm.sh
               helm create spc-chart 
-              
-          - name: Set KUBECONFIG
-            run: echo "KUBECONFIG=/etc/rancher/k3s/k3s.yaml" >> $GITHUB_ENV
-      
-          - name: Deploy application in Kubernetes using Helm
-            run: |
-                helm install spc-release ./spc-chart --values ./spc-chart/values.yaml
 
-
+          
 
          
             
