@@ -73,6 +73,11 @@
               
                           # Create the resource group
                           az group create --name $MY_RESOURCE_GROUP_NAME --location $REGION
+                          if az aks show -n $MY_AKS_CLUSTER_NAME -g $MY_RESOURCE_GROUP_NAME -o tsv; then
+                            echo "AKS cluster '$MY_AKS_CLUSTER_NAME' already exists."
+                          else
+                            echo "Creating AKS cluster '$MY_AKS_CLUSTER_NAME'..."
+        
               
                           # Create the AKS cluster
                           az aks create \
@@ -104,4 +109,3 @@
 
 
 
-                          
