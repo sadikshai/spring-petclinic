@@ -85,9 +85,10 @@
                             --name $MY_AKS_CLUSTER_NAME \
                             --node-count 2 \
                             --node-vm-size "Standard_B2ms" \
-                            --generate-ssh-keys \                         
+                            --generate-ssh-keys \ 
+                          az aks install-cli                        
                           # Get credentials for the AKS cluster
-                          az aks get-credentials --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_AKS_CLUSTER_NAME
+                          az aks get-credentials --resource-group myAKSResourceGroup --name myAKSCluster
                           fi
           - name: Install Helm
             run: |
@@ -107,7 +108,7 @@
               helm install spc-release spc-chart
 
 
-              
+
               
           
 
