@@ -66,33 +66,26 @@
             with:
               azcliversion: latest
               inlineScript: |
-                          MY_RESOURCE_GROUP_NAME="myAKSResourceGroup"
-                          REGION="eastus"
-                          MY_AKS_CLUSTER_NAME="myAKSCluster"
-                          MY_DNS_LABEL="mydnslabel"
-              
-                          # Create the resource group
-                          az group create --name $MY_RESOURCE_GROUP_NAME --location $REGION
-                          if az aks show -n $MY_AKS_CLUSTER_NAME -g $MY_RESOURCE_GROUP_NAME -o tsv; then
-                            echo "AKS cluster '$MY_AKS_CLUSTER_NAME' already exists."
-                          else
-                            echo "Creating AKS cluster '$MY_AKS_CLUSTER_NAME'..."
-        
-              
-                          # Create the AKS cluster
-                          az aks create \
-                            --resource-group $MY_RESOURCE_GROUP_NAME \
-                            --name $MY_AKS_CLUSTER_NAME \
-                            --node-count 2 \
-                            --node-vm-size "Standard_B2ms" \
-                            --generate-ssh-keys \ 
-                          az aks install-cli                        
-                          fi
-
-          - name: set AKS context
-            run: |
-              
-                  az aks get-credentials --resource-group myAKSResourceGroup --name myAKSCluster
+                MY_RESOURCE_GROUP_NAME="myAKSResourceGroup"
+                REGION="eastus"
+                MY_AKS_CLUSTER_NAME="myAKSCluster"
+                MY_DNS_LABEL="mydnslabel"
+          
+                # Create the resource group if it doesn't exist
+                az group create --name $MY_RESOURCE_GROUP_NAME --location $REGION
+          
+                # Create the AKS cluster with managed identity enabled
+                az aks create \
+                  --resource-group $MY_RESOURCE_GROUP_NAME \
+                  --name $MY_AKS_CLUSTER_NAME \
+                  --node-count 2 \
+                  --node-vm-size "Standard_B2ms" \
+                  --generate-ssh-keys \
+                  --enable-managed-identity \
+                  --dns-name-prefix $MY_DNS_LABEL
+          
+                # Get credentials for the AKS cluster
+                az aks get-credentials --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_AKS_CLUSTER_NAME
 
           - name: Install Helm
             run: |
