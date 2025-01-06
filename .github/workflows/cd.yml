@@ -98,7 +98,7 @@
             run: |
               helm create spc-chart
           - name: List contents of spc-chart (for verification)
-            run: ls -R spc-chart || echo "spc-chart directory does not exist.
+            run: ls -R spc-chart || echo "spc-chart directory does not exist."
               
           
 
