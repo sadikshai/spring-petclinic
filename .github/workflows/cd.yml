@@ -91,7 +91,11 @@
                           # Get credentials for the AKS cluster
                           az aks get-credentials --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_AKS_CLUSTER_NAME
                           fi
-
+          - name: installing helm
+            run: |
+              curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+              chmod 700 get_helm.sh
+               ./get_helm.sh 
 
 
          
