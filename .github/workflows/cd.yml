@@ -64,55 +64,40 @@
           - name: Azure CLI script
             uses: azure/cli@v2
             with:
-                        azcliversion: latest
-                        inlineScript: |
+              azcliversion: latest
+              inlineScript: |
                           MY_RESOURCE_GROUP_NAME="myAKSResourceGroup"
                           REGION="eastus"
                           MY_AKS_CLUSTER_NAME="myAKSCluster"
                           MY_DNS_LABEL="mydnslabel"
-                    
-                          # Create the resource group if it doesn't exist
+              
+                          # Create the resource group
                           az group create --name $MY_RESOURCE_GROUP_NAME --location $REGION
-                          
-                          # Check if the resource group was created successfully
-                          if [ $? -ne 0 ]; then
-                            echo "Failed to create resource group."
-                            exit 1
-                          fi
-                          
-                          # Create the AKS cluster with debug information
+                          if az aks show -n $MY_AKS_CLUSTER_NAME -g $MY_RESOURCE_GROUP_NAME -o tsv; then
+                            echo "AKS cluster '$MY_AKS_CLUSTER_NAME' already exists."
+                          else
+                            echo "Creating AKS cluster '$MY_AKS_CLUSTER_NAME'..."
+        
+              
+                          # Create the AKS cluster
                           az aks create \
                             --resource-group $MY_RESOURCE_GROUP_NAME \
                             --name $MY_AKS_CLUSTER_NAME \
                             --node-count 2 \
                             --node-vm-size "Standard_B2ms" \
-                            --generate-ssh-keys \
-                            --debug
-                    
-                          # Check if AKS cluster creation was successful
-                          if [ $? -ne 0 ]; then
-                            echo "Failed to create AKS cluster."
-                            exit 1
-                          fi
-                    
+                            --generate-ssh-keys \                         
                           # Get credentials for the AKS cluster
                           az aks get-credentials --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_AKS_CLUSTER_NAME
-                          
-                          # Verify credentials were obtained successfully
-                          if [ $? -ne 0 ]; then
-                            echo "Failed to get AKS credentials."
-                            exit 1
                           fi
-                    
-                          
           - name: installing helm
             run: |
               curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-              chmod 700 get_helm.sh
-               ./get_helm.sh
+              
               helm create spc-chart 
-
+              
           
+
+
 
          
             
