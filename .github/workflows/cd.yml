@@ -90,6 +90,7 @@
               
                           # Get credentials for the AKS cluster
                           az aks get-credentials --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_AKS_CLUSTER_NAME
+                          fi
 
 
 
