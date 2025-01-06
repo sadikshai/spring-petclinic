@@ -85,9 +85,7 @@
                             --name $MY_AKS_CLUSTER_NAME \
                             --node-count 1 \
                             --node-vm-size "Standard_B2ms" \
-                            --generate-ssh-keys \
-                            --dns-name-prefix $MY_DNS_LABEL
-              
+                            --generate-ssh-keys \                         
                           # Get credentials for the AKS cluster
                           az aks get-credentials --resource-group $MY_RESOURCE_GROUP_NAME --name $MY_AKS_CLUSTER_NAME
                           fi
@@ -97,9 +95,10 @@
               chmod 700 get_helm.sh
                ./get_helm.sh
               helm create spc-chart 
-          - name: aeplying application in k8s
+          - name: deploying application in k8s
             run: |
-              helm install spc-release spc-chart
+              helm install spc-release ./spc-chart --values ./spc-chart/values.yaml
+
 
 
          
