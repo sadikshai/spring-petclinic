@@ -105,6 +105,9 @@
           - name: deploying 
             run: |
               helm install spc-release spc-chart
+
+
+              
               
           
 
