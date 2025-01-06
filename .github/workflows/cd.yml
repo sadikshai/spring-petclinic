@@ -87,9 +87,13 @@
                             --node-vm-size "Standard_B2ms" \
                             --generate-ssh-keys \ 
                           az aks install-cli                        
-                          # Get credentials for the AKS cluster
-                          az aks get-credentials --resource-group myAKSResourceGroup --name myAKSCluster
                           fi
+
+          - name: set AKS context
+            run: |
+              
+                  az aks get-credentials --resource-group myAKSResourceGroup --name myAKSCluster
+
           - name: Install Helm
             run: |
                 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
