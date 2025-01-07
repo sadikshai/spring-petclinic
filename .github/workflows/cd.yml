@@ -109,7 +109,7 @@
               replicaCount: 3
 
               image:
-                repository:  sadik8143/springpet:1.2
+                repository: sadik8143/springpet
                 tag: "1.2"
                 pullPolicy: IfNotPresent
 
