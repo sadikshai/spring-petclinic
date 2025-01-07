@@ -132,7 +132,7 @@
 
           - name: Deploy Helm Chart
             run: |
-              helm install spc-release spc-chart \
+              helm upgrade --install spc-release ./spc-chart \
               --namespace default \
               --set serviceAccount.create=true \
               --set ingress.enabled=false \
