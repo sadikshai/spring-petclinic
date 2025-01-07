@@ -126,12 +126,14 @@
                   cpu: "512m"
               EOF
 
+          - name: Get all k8s resources
+            run: |
+              kubectl get all
+
           - name: Deploy Helm Chart
             run: |
-              kubectl get nodes
               helm install spc-release spc-chart \
               --namespace default \
-              --set image.tag=${{ github.sha }} \
               --set serviceAccount.create=true \
               --set ingress.enabled=false \
               --set autoscaling.enabled=false \
