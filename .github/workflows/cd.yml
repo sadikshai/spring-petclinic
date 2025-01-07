@@ -134,7 +134,7 @@
             run: |
               helm upgrade --install spc-release ./spc-chart \
               --namespace default \
-              --set image.tag=1.0 \
+              --set image.tag=sha256:f527af73865ca29b4396601e0429a49d32dce0c11c069508dee42527c7a26956 \
               --set serviceAccount.create=true \
               --set ingress.enabled=false \
               --set autoscaling.enabled=false \
