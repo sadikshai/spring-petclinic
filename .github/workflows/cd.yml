@@ -109,8 +109,8 @@
               replicaCount: 3
 
               image:
-                repository: sadik8143/springpet
-                tag: "1.2"
+                repository: manoj406/spc-cicd
+                tag: "62"
                 pullPolicy: IfNotPresent
 
               service:
