@@ -134,6 +134,7 @@
             run: |
               helm upgrade --install spc-release ./spc-chart \
               --namespace default \
+              --set image.tag=1.0 \
               --set serviceAccount.create=true \
               --set ingress.enabled=false \
               --set autoscaling.enabled=false \
