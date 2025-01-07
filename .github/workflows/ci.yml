@@ -40,7 +40,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: sadik8143/springpetclinic:1.0
+          tags: sadik8143/cicd:1.0
 
       
       - name: installing trivy
@@ -54,7 +54,7 @@ jobs:
 
       - name: Scan the image and save results
         run: |
-            trivy image --format json --output trivy-results.json sadik8143/springpetclinic:1.0
+            trivy image --format json --output trivy-results.json sadik8143/cicd:1.0
 
 
       - name: Upload Trivy scan results
