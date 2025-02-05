@@ -1,0 +1,68 @@
+pool: Default
+
+pr:
+  - develop
+
+variables:
+  dockerImageName: 'sadik8143/springclinic' 
+  dockerTag: '$(Build.BuildId)'
+
+stages:
+  - stage: continous_integration
+    jobs:
+      - job: BuildJob
+        displayName: 'Building and Testing'
+        steps:
+
+          - task: Maven@4
+            inputs:
+              mavenPOMFile: 'pom.xml'
+              goals: 'clean package'
+              publishJUnitResults: true
+              testResultsFiles: '**/surefire-reports/TEST-*.xml'
+           
+          - task: CopyFiles@2
+            inputs:
+              contents: '**/*.jar'
+              targetFolder: $(Build.ArtifactStagingDirectory)
+
+          
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: $(Build.ArtifactStagingDirectory)
+              artifactName: Drop
+
+          
+          - task: Docker@2
+            displayName: 'Build Docker Image'
+            inputs:
+              command: 'build'
+              Dockerfile: './Dockerfile'  
+              repository: $(dockerImageName)
+              tags: |
+                $(dockerTag)
+
+          - task: CmdLine@2
+            displayName: 'scannig image '
+            inputs:
+              script: |
+                 trivy image  $(dockerImageName):$(dockerTag) -o trivy-report.xml
+
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish Trivy Report'
+            inputs:
+              targetPath: 'trivy-report.xml'
+              artifact: 'TrivyReport'
+
+          - task: Docker@2
+            displayName: pushing the docker image
+            inputs:
+              containerRegistry: 'DOCKER_HUB'
+              repository: $(dockerImageName)
+              command: 'push'
+              tags: |
+                $(dockerTag) 
+
+          
+
+
