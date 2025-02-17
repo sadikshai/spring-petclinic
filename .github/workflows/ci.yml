@@ -31,7 +31,7 @@ jobs:
               target/surefire-reports/*.xml
       - name: Upload Trivy scan results
               
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
                 name: uploading jar file
                 path: target/**/*.jar 
@@ -58,10 +58,10 @@ jobs:
             ignore-unfixed: false
             severity: 'HIGH,CRITICAL'
         continue-on-error: true
-        
+
       - name: Upload Trivy scan results
         if: steps.trivy_scan.outcome == 'success'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: trivy-scan-results
           path: trivy-results.sarif
