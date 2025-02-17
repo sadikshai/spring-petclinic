@@ -53,7 +53,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
             image-ref: 'sadik8143/spc:1.0'
-            format: 'jason'
+            format: 'json'
             exit-code: '1'
             ignore-unfixed: false
             severity: 'HIGH,CRITICAL'
@@ -64,7 +64,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: trivy-scan-results
-          path: trivy-results.jason
+          path: trivy-results.json
 
       - name: pushing image
         uses: docker/build-push-action@v6
