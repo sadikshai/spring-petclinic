@@ -7,7 +7,7 @@ on:
     branches:
       - main
 jobs:
-  build_docker_image:
+  build__push:
     runs-on: ubuntu-latest
     steps: 
       - name: Checkout code
@@ -18,9 +18,17 @@ jobs:
         with:
           distribution: 'temurin' 
           java-version: '17'
+
       - name: maven clean package
         run: |
           mvn clean package
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+            files: |
+              target/surefire-reports/*.xml
 
 
              
