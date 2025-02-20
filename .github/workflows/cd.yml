@@ -43,9 +43,23 @@
             with:
                     name: trivy-scan-results
                     path: trivy-results.json
+
+          - name: Azure login
+            uses: azure/login@v2
+            with:
+              client-id: "22008831-1561-42ff-879f-e7a0ca7298ef"
+              tenant-id: "99ef06df-664d-4769-9eaa-9f4ba6706a0d"
+              subscription-id: "48779e5a-57d5-432c-8ddf-d51b82b18f09"
+
+          - name: Azure CLI script
+            uses: azure/cli@v2
+            with:
+                azcliversion: latest
+                inlineScript: |
+                  az account show
+            
                
 
          
 
 
-                    
