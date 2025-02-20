@@ -55,24 +55,14 @@ jobs:
           name: codeql-analysis-results
           path: sarif-results
 
-     
-
-          
-
-      - name: Setup JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v2
+      # Step 5: Upload Jar File
+      - name: Upload Jar File
+        uses: actions/upload-artifact@v4
         with:
-          version: '2.7.0'
-      - name: Configure JFrog CLI
-        run: |
-            jfrog config add artifactory-server \
-              --url="${{ secrets.JFROG_URL }}" \
-              --user="${{ secrets.JFROG_USERNAME }}" \
-              --password="${{ secrets.JFROG_PASSWORD }}" \
-              --interactive=false
+          name: jar-file
+          path: target/*.jar
 
-      - name: Upload JAR to Artifactory
-        run: jfrog rt upload "target/*.jar" "my-repo/my-app/"
+     
   
 
       # Step 6: Docker Setup
