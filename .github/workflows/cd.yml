@@ -58,6 +58,21 @@
                 azcliversion: latest
                 inlineScript: |
                   az account show
+
+          - name: Set Up Terraform
+            uses: hashicorp/setup-terraform@v2
+
+          - name: Initialize Terraform
+            run: terraform init
+            working-directory: ./infra
+    
+          - name: Validate Terraform
+            run: terraform validate
+            working-directory: ./infra
+    
+          - name: Apply Terraform Changes
+            run: terraform apply -var-file="default.tfvars"-auto-approve
+            working-directory: ./infra
             
                
 
