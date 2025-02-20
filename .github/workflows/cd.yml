@@ -24,3 +24,25 @@
                push: false
                tags: sadik8143/spc:1.0
                load: true
+
+          - name: Run Trivy Scan
+            id: trivy_scan
+            uses: aquasecurity/trivy-action@master
+            with:
+                    image-ref: 'sadik8143/spc:1.0'
+                    format: 'json'
+                    output: trivy-results.json
+                    exit-code: '1'
+                    ignore-unfixed: false
+                    severity: 'HIGH,CRITICAL'
+                    continue-on-error: true
+          
+          - name: Upload Trivy Scan Results
+            if: steps.trivy_scan.outcome == 'success'
+            uses: actions/upload-artifact@v4
+            with:
+                    name: trivy-scan-results
+                    path: trivy-results.json
+               
+
+         
