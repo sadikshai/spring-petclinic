@@ -60,7 +60,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jar-file
-          path: target/**/*.jar
+          path: target/*.jar
 
       # Step 6: Docker Setup
       - name: Log in to Docker Hub
