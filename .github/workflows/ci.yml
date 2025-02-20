@@ -76,7 +76,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          push: true
+          push: false
           tags: sadik8143/spc:1.0
 
       # Step 7: Trivy Security Scan (After Image is Pushed)
@@ -98,3 +98,10 @@ jobs:
         with:
           name: trivy-scan-results
           path: trivy-results.json
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v6
+        with:
+            context: .
+            push: true
+            tags: sadik8143/spc:1.0
