@@ -21,7 +21,7 @@
           - name: Pull Docker Image
             run: |
               docker pull sadik8143/spc:1.0
-              
+
           - name: Run Trivy Scan
             id: trivy_scan
             uses: aquasecurity/trivy-action@master
@@ -70,6 +70,8 @@
           - name: Apply Terraform Changes
             run: terraform apply -var-file="default.tfvars"-auto-approve
             working-directory: infra
+            
+
             
                
 
