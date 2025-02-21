@@ -61,6 +61,9 @@ jobs:
           echo "ARM_CLIENT_SECRET=${{ secrets.AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
           echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
 
+      - name: Set Up Terraform
+        uses: hashicorp/setup-terraform@v2  # Installs Terraform
+
       - name: Initialize Terraform
         run: terraform init
         working-directory: infra
@@ -72,3 +75,4 @@ jobs:
       - name: Apply Terraform Changes
         run: terraform apply -auto-approve
         working-directory: infra
+
