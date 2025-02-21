@@ -1,82 +1,77 @@
----
-    name: continous deployement
-    on:
-        push:
-            branches:
-                - release
-    jobs:
-      deployment_cluster:
-         runs-on: ubuntu-latest
-         permissions:
-          id-token: write 
-          contents: read 
+name: continuous deployment
+on:
+  push:
+    branches:
+      - release
 
-         steps: 
-          - name: Log in to Docker Hub
-            uses: docker/login-action@v2
-            with:
-             username: ${{ secrets.USER_NAME }}
-             password: ${{ secrets.PASSWORD }}
+jobs:
+  deployment_cluster:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
-          - name: Pull Docker Image
-            run: |
-              docker pull sadik8143/spc:1.0
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4  # Ensures files are available
 
-          - name: Run Trivy Scan
-            id: trivy_scan
-            uses: aquasecurity/trivy-action@master
-            with:
-                    image-ref: 'sadik8143/spc:1.0'
-                    format: 'json'
-                    output: trivy-results.json
-                    exit-code: '1'
-                    ignore-unfixed: false
-                    severity: 'HIGH,CRITICAL'
-                    continue-on-error: true
-          
-          - name: Upload Trivy Scan Results
-            if: steps.trivy_scan.outcome == 'success'
-            uses: actions/upload-artifact@v4
-            with:
-                    name: trivy-scan-results
-                    path: trivy-results.json
+      - name: Debug Directory Structure
+        run: ls -R  # Check if infra exists
 
-          - name: Azure Login
-            uses: azure/login@v2
-            with:
-                creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}",
-                        "clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}",
-                        "subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}",
-                         "tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
-        
-          - name: Azure CLI script
-            uses: azure/cli@v2
-            with:
-                azcliversion: latest
-                inlineScript: |
-                  az account show
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.USER_NAME }}
+          password: ${{ secrets.PASSWORD }}
 
-          - name: Set Up Terraform
-            uses: hashicorp/setup-terraform@v2
+      - name: Pull Docker Image
+        run: docker pull sadik8143/spc:1.0
 
-          - name: Initialize Terraform
-            run: terraform init
-            working-directory: infra
-    
-          - name: Validate Terraform
-            run: terraform validate
-            working-directory: infra
-    
-          - name: Apply Terraform Changes
-            run: terraform apply -var-file="default.tfvars"-auto-approve
-            working-directory: infra
-            
+      - name: Run Trivy Scan
+        id: trivy_scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'sadik8143/spc:1.0'
+          format: 'json'
+          output: trivy-results.json
+          exit-code: '1'
+          ignore-unfixed: false
+          severity: 'HIGH,CRITICAL'
+          continue-on-error: true
 
-            
+      - name: Upload Trivy Scan Results
+        if: steps.trivy_scan.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-scan-results
+          path: trivy-results.json
 
-            
-               
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}",
+                  "clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}",
+                  "subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}",
+                  "tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
 
-         
+      - name: Azure CLI script
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
 
+      - name: Set Up Terraform
+        uses: hashicorp/setup-terraform@v2
 
+      - name: Initialize Terraform
+        run: terraform init
+        working-directory: infra
+
+      - name: Validate Terraform
+        run: terraform validate
+        working-directory: infra
+
+      - name: Apply Terraform Changes
+        run: terraform apply -var-file="default.tfvars" -auto-approve
+        working-directory: infra
