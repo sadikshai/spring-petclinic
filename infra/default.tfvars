@@ -1,5 +1,5 @@
 resource_group_info = {
-  location = "westus"
+  location = "eastus"
   name     = "myresourcegroup"
 
 }
