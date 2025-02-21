@@ -81,6 +81,12 @@ jobs:
            version: latest 
         id: install
 
+      - name: Deploy Application using Helm
+        run: |
+         
+          helm upgrade --install spc-release ./spc-chart \
+            --namespace default \
+           
 
 
         
