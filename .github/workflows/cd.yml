@@ -73,6 +73,6 @@ jobs:
         working-directory: infra
 
       - name: Apply Terraform Changes
-        run: terraform apply -auto-approve
+        run: terraform apply -var-file="default.tfvars" -auto-approve
         working-directory: infra
 
