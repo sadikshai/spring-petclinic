@@ -13,10 +13,10 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4  # Ensures files are available
+        uses: actions/checkout@v4  
 
       - name: Debug Directory Structure
-        run: ls -R  # Check if infra exists
+        run: ls -lah
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -68,10 +68,14 @@ jobs:
         run: terraform init
         working-directory: infra
 
+      - name: Terraform Plan
+        run: terraform plan -var-file="default.tfvars"
+        working-directory: infra
+
       - name: Validate Terraform
         run: terraform validate
         working-directory: infra
 
       - name: Apply Terraform Changes
-        run: terraform apply -var-file="default.tfvars" -auto-approve
+        run: terraform apply -var-file="default.tfvars" -auto-approve -input=false -no-color
         working-directory: infra
