@@ -19,12 +19,9 @@
              password: ${{ secrets.PASSWORD }}
 
           - name: Pull Docker Image
-            uses: docker/build-push-action@v6
-            with:
-               push: false
-               tags: sadik8143/spc:1.0
-               load: true
-
+            run: |
+              docker pull sadik8143/spc:1.0
+              
           - name: Run Trivy Scan
             id: trivy_scan
             uses: aquasecurity/trivy-action@master
