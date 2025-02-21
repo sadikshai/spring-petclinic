@@ -78,8 +78,9 @@ jobs:
 
       - name: Extract Kubernetes Configuration
         run: |
-          terraform output -raw kube_config > kubeconfig.yaml
+          terraform output -json kube_config | jq -r . > kubeconfig.yaml
         working-directory: infra
+      
 
       - name: Configure Kubeconfig
         run: |
