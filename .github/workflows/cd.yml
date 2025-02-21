@@ -62,7 +62,7 @@ jobs:
           echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
 
       - name: Set Up Terraform
-        uses: hashicorp/setup-terraform@v2  # Installs Terraform
+        uses: hashicorp/setup-terraform@v2  
 
       - name: Initialize Terraform
         run: terraform init
@@ -75,6 +75,11 @@ jobs:
       - name: Apply Terraform Changes
         run: terraform apply -var-file="default.tfvars" -auto-approve
         working-directory: infra
+
+      - uses: azure/setup-helm@v4.3.0
+        with:
+           version: 'default' # default is latest (stable)
+        id: install
 
 
 

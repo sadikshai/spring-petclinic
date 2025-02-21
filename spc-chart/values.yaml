@@ -1,0 +1,45 @@
+minReadySeconds: 5
+replicas: 4
+matchLabels:
+  app: spring
+strategy:
+  type: RollingUpdate
+rollingUpdate:
+  maxSurge: 25%
+  maxUnavailable: 25%
+containers:
+  - name: "webcont"
+    image: "sadik8143/springclinic:46"
+resources:
+  requests:
+    memory: 64M
+    cpu: 100m
+  limits:
+    memory: 256M
+    cpu: 500m
+ports:
+  - containerPort: 8080
+livenessProbe:
+  httpGet:
+    path: /actuator/health   
+    port: 8080
+  initialDelaySeconds: 60   
+  periodSeconds: 10          
+  failureThreshold: 3 
+
+readinessProbe:
+  httpGet:
+    path: /actuator/health   
+    port: 8080
+  initialDelaySeconds: 60
+  periodSeconds: 10
+  failureThreshold: 3
+
+service:
+  name: spring-svc
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+  
+                  
