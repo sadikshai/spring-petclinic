@@ -54,24 +54,15 @@ jobs:
                   "subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}",
                   "tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
 
-      - name: Azure CLI Login
+      - name: Set Terraform Environment Variables
         run: |
-          az login --service-principal \
-            --username "${{ secrets.AZURE_CLIENT_ID }}" \
-            --password "${{ secrets.AZURE_CLIENT_SECRET }}" \
-            --tenant "${{ secrets.AZURE_TENANT_ID }}"
-
-      
-
-      - name: Set Up Terraform
-        uses: hashicorp/setup-terraform@v2
+          echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+          echo "ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "ARM_CLIENT_SECRET=${{ secrets.AZURE_CLIENT_SECRET }}" >> $GITHUB_ENV
+          echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
 
       - name: Initialize Terraform
         run: terraform init
-        working-directory: infra
-
-      - name: Terraform Plan
-        run: terraform plan -var-file="default.tfvars"
         working-directory: infra
 
       - name: Validate Terraform
@@ -79,8 +70,5 @@ jobs:
         working-directory: infra
 
       - name: Apply Terraform Changes
-        run: terraform apply -var-file="default.tfvars" -auto-approve -input=false -no-color
+        run: terraform apply -auto-approve
         working-directory: infra
-
-
-
