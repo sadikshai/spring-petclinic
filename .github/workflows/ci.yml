@@ -22,11 +22,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # Step 1: Build the Project with Maven
+      
       - name: Maven Build
         run: mvn clean package
 
-      # Step 2: Run Tests & Upload Test Results
+      
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
@@ -34,7 +34,7 @@ jobs:
           files: |
             target/surefire-reports/*.xml
 
-      # Step 3: CodeQL Analysis (After Compilation)
+      
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
@@ -48,14 +48,14 @@ jobs:
         with:
           output: sarif-results
 
-      # Step 4: Upload CodeQL SARIF Results as Artifact
+      
       - name: Upload CodeQL Analysis Results
         uses: actions/upload-artifact@v4
         with:
           name: codeql-analysis-results
           path: sarif-results
 
-      # Step 5: Upload Jar File
+      
       - name: Upload Jar File
         uses: actions/upload-artifact@v4
         with:
@@ -65,7 +65,7 @@ jobs:
      
   
 
-      # Step 6: Docker Setup
+      
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -79,7 +79,7 @@ jobs:
           push: false
           tags: sadik8143/spc:1.0
 
-      # Step 7: Trivy Security Scan (After Image is Pushed)
+
       - name: Run Trivy Scan
         id: trivy_scan
         uses: aquasecurity/trivy-action@master
