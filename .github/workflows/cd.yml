@@ -1,4 +1,5 @@
-name: continuous deployment
+name: Continuous Deployment
+
 on:
   push:
     branches:
@@ -78,19 +79,28 @@ jobs:
 
       - name: Extract Kubernetes Configuration
         run: |
-          terraform output -raw kube_config > kubeconfig.yaml
+          terraform output -raw kube_config > infra/kubeconfig.yaml
         working-directory: infra
-      
 
       - name: Configure Kubeconfig
         run: |
           export KUBECONFIG=$(pwd)/infra/kubeconfig.yaml
+          kubectl cluster-info
           kubectl get nodes
 
-      - uses: azure/setup-helm@v4.3.0
+      - name: Ensure Namespace Exists
+        run: |
+          export KUBECONFIG=$(pwd)/infra/kubeconfig.yaml
+          kubectl create namespace default --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4.3.0
         with:
-           version: latest 
+          version: latest 
         id: install
+
+      - name: Verify Helm Installation
+        run: helm version
 
       - name: Deploy Application using Helm
         run: |
