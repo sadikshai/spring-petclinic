@@ -77,6 +77,16 @@ jobs:
         run: terraform apply -var-file="default.tfvars" -auto-approve
         working-directory: infra
 
+      - name: Set AKS Context
+        run: az aks get-credentials --resource-group myresourcegroup --name myAKSCluster --overwrite-existing
+      
+      - name: Verify Kubernetes Access
+        run: kubectl get nodes
+      
+      - name: Ensure kubectl Context
+        run: kubectl config view --minify
+      
+
       - name: Install Helm
         uses: azure/setup-helm@v4.3.0
         with:
@@ -94,4 +104,3 @@ jobs:
 
 
 
-            
