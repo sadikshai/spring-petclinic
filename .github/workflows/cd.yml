@@ -102,5 +102,10 @@ jobs:
           helm upgrade --install spc-release ./spc-chart \
             --namespace default
 
+      - name: getting the service
+        run: |
+          kubectl get po
+          kubectl get svc
+
 
 
