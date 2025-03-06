@@ -1,24 +1,23 @@
-pipeline{
+pipeline {
     agent any 
 
-    tools{
+    tools {
         maven 'MAVENHOME_3.9.9'
     }
-    stages{
+
+    stages {
         stage('SCM') {
-            steps{
-                git url:'https://github.com/sadikshai/spring-petclinic.git',
-                branch: 'main'
-            }
-
-
-        }
-        stage('BUILD'){
-            steps{
-                sh'mvn clean package'
+            steps {
+                git url: 'https://github.com/sadikshai/spring-petclinic.git', branch: 'main'
             }
         }
-        
+
+        stage('BUILD') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+    }
 
     post {
         success {
@@ -29,5 +28,4 @@ pipeline{
             echo 'Build failed. Check logs for errors.'
         }
     }
-}
 }
