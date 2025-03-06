@@ -15,8 +15,19 @@ pipeline{
         }
         stage('BUILD'){
             steps{
-                sh'mvn validate'
+                sh'mvn clean package'
             }
         }
+        
+
+    post {
+        success {
+            junit 'target/surefire-reports/*.xml' 
+            archiveArtifacts artifacts: '**/*.jar'
+        }
+        failure {
+            echo 'Build failed. Check logs for errors.'
+        }
     }
+}
 }
